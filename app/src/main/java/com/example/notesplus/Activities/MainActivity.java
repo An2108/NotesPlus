@@ -2,13 +2,19 @@ package com.example.notesplus.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.example.notesplus.Activities.CreateNoteActivity;
+import com.example.notesplus.Database.NoteDatabase;
+import com.example.notesplus.Entities.Notes;
 import com.example.notesplus.R;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,5 +34,27 @@ public class MainActivity extends AppCompatActivity {
                 );
             }
         });
+
+        getNotes();
     }
+
+    private void getNotes(){
+        @SuppressLint("StaticFieldLeak")
+        class GetNotesTask extends AsyncTask< Void, Void, List<Notes>>{
+
+            @Override
+            protected List<Notes> doInBackground(Void... voids) {
+                return NoteDatabase.getNoteDatabase(getApplicationContext()).noteDao().getAllNotes();
+            }
+
+            @Override
+            protected void onPostExecute(List<Notes> notes) {
+                super.onPostExecute(notes);
+                Log.d("My_NOTES", notes.toString());
+            }
+        }
+        new GetNotesTask().execute();
+    }
+
+
 }
