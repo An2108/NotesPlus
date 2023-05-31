@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     notesList.addAll(notes);
                     notesAdapter.notifyDataSetChanged();
                 }else {
-                    notesList.addAll(notes);
+                    notesList.add(0, notes.get(0));
                     notesAdapter.notifyItemInserted(0);
                 }
                 notesRecyclerView.smoothScrollToPosition(0);
