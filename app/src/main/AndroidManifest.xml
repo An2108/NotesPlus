@@ -14,12 +14,12 @@
 
 
         <activity
-            android:name=".CreateNoteActivity"
+            android:name=".Activities.CreateNoteActivity"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="stateHidden"
             />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="stateHidden"
             android:exported="true">
