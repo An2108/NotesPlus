@@ -47,8 +47,8 @@ public class CreateNoteActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_STORAGE_PEMISSION = 1;
     private static final  int REQUEST_CODE_SELECT_IMAGE = 2;
 
-
-
+    private View layoutWebURL;
+    private TextView textWebURL;
     private   ImageView imageNote;
     private  Notes alreadyAvailableNote;
     @Override
@@ -87,13 +87,13 @@ public class CreateNoteActivity extends AppCompatActivity {
             setViewOrUpdate();
         }
 
-        /*findViewById(R.id.imageRemoveWebURL).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.imageRemoveWebURL).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 textWebURL.setText(null);
                 layoutWebURL.setVisibility(View.GONE);
             }
-        });*/
+        });
 
         findViewById(R.id.imageRemoveImage).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,10 +121,10 @@ public class CreateNoteActivity extends AppCompatActivity {
             findViewById(R.id.imageRemoveImage).setVisibility(View.VISIBLE);
             selectImagePath = alreadyAvailableNote.getImagePath();
         }
-      /*  if(alreadyAvailableNote.getWebLink() != null && !alreadyAvailableNote.getWebLink().trim().isEmpty()){
-            textWebURL.setText.(alreadyAvailableNote.getWebLink());
-            layoutWebURL.setVisbility(View.VISIBLE);
-        }*/
+        if(alreadyAvailableNote.getWebLink() != null && !alreadyAvailableNote.getWebLink().trim().isEmpty()){
+            textWebURL.setText(alreadyAvailableNote.getWebLink());
+            layoutWebURL.setVisibility(View.VISIBLE);
+        }
     }
 
     private void saveNote(){
@@ -144,6 +144,10 @@ public class CreateNoteActivity extends AppCompatActivity {
         notes.setColor(selectedNoteColor);
         notes.setImagePath(selectImagePath);
 
+
+        if(layoutWebURL.getVisibility()== View.VISIBLE){
+           notes.setWebLink(textWebURL.getText().toString());
+        }
 
         if(alreadyAvailableNote != null){
             notes.setId(alreadyAvailableNote.getId());
@@ -357,5 +361,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         textDateTime = findViewById(R.id.textDateTime);
         imageNote = findViewById(R.id.imageNote);
         viewSubtitleIndicator = findViewById(R.id.viewSubtitleIndicator);
+        layoutWebURL = findViewById(R.id.layoutWebURL);
+        textWebURL = findViewById(R.id.textWebURL);
     }
 }
