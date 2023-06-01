@@ -2,6 +2,7 @@ package com.example.notesplus.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -14,12 +15,16 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,7 +52,9 @@ public class CreateNoteActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_STORAGE_PEMISSION = 1;
     private static final  int REQUEST_CODE_SELECT_IMAGE = 2;
 
-    private View layoutWebURL;
+    private AlertDialog dialogAddURL;
+
+    private LinearLayout layoutWebURL;
     private TextView textWebURL;
     private   ImageView imageNote;
     private  Notes alreadyAvailableNote;
@@ -288,6 +295,14 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
 
+        layoutMiscellaneous.findViewById(R.id.layoutAddUrl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+              showAddURLDialog();
+            }
+        });
+
     }
 
     private void setSubtitleIndicator()
@@ -352,6 +367,57 @@ public class CreateNoteActivity extends AppCompatActivity {
         return filePath;
 
     }
+
+    private void showAddURLDialog()
+    {
+        if(dialogAddURL == null)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
+            View view= LayoutInflater.from(this).inflate(
+                    R.layout.layout_add_url,
+                    (ViewGroup) findViewById(R.id.layoutAddUrlcontainer)
+            );
+            builder.setView(view);
+
+            dialogAddURL= builder.create();
+            if(dialogAddURL.getWindow() != null)
+            {
+                dialogAddURL.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+
+            }
+            final EditText inputURL = view.findViewById(R.id.inputURL);
+            inputURL.requestFocus();
+
+            view.findViewById(R.id.textAdd).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(inputURL.getText().toString().trim().isEmpty())
+                    {
+                        Toast.makeText(CreateNoteActivity.this, "Enter URL", Toast.LENGTH_SHORT).show();
+                    } else if (!Patterns.WEB_URL.matcher(inputURL.getText().toString()).matches())
+                    {
+                        Toast.makeText(CreateNoteActivity.this, "Enter valid URL", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        textWebURL.setText(inputURL.getText().toString());
+                        layoutWebURL.setVisibility(View.VISIBLE);
+                        dialogAddURL.dismiss();
+                    }
+                }
+            });
+
+            view.findViewById(R.id.textCancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogAddURL.dismiss();
+                }
+            });
+        }
+        dialogAddURL.show();
+    }
+
+
 
     public void anhxa(){
 

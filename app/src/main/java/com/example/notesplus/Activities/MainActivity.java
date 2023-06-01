@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ImageView imageAddNoteMain = findViewById(R.id.imageaddNoteMain);
         imageAddNoteMain.setOnClickListener(new View.OnClickListener() {
             @Override
