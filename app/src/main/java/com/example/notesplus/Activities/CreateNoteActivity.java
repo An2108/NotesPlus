@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +29,12 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     private EditText inputNoteTitle,inputNoteSubtitle, inputNoteText;
     private TextView textDateTime;
+    private View viewSubtitleIndicator;
+
+    private String selectedNoteColor;
+
+
+
     private   ImageView imageNote;
     private  Notes alreadyAvailableNote;
     @Override
@@ -42,17 +50,22 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
 
+
+
         textDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy MM:mm a", Locale.getDefault()).format((new Date()))
         );
 
         ImageView imageSave = findViewById(R.id.imageSave);
         imageSave.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 saveNote();
             }
         });
+
+        selectedNoteColor= "#333333";
 
         /*if(getIntent().getBooleanExtra("isViewOrUpdate", false)){
             alreadyAvailableNote = (Notes) getIntent().getSerializableExtra("notes");
@@ -60,6 +73,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         }*/
 
         initMiscellaneous();
+        setSubtitleIndicator();
     }
 
 
@@ -95,6 +109,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         notes.setSubtitle(inputNoteSubtitle.getText().toString());
         notes.setNoteText(inputNoteText.getText().toString());
         notes.setDateTime(textDateTime.getText().toString());
+        notes.setColor(selectedNoteColor);
 
         @SuppressLint("StaticFieldLeak")
         class SaveNoteTask extends AsyncTask<Void, Void, Void>{
@@ -127,9 +142,86 @@ public class CreateNoteActivity extends AppCompatActivity {
                 }
             }
         });
+        final ImageView imageColor1 = layoutMiscellaneous.findViewById(R.id.imageColor1);
+        final ImageView imageColor2 = layoutMiscellaneous.findViewById(R.id.imageColor2);
+        final ImageView imageColor3 = layoutMiscellaneous.findViewById(R.id.imageColor3);
+        final ImageView imageColor4 = layoutMiscellaneous.findViewById(R.id.imageColor4);
+        final ImageView imageColor5 = layoutMiscellaneous.findViewById(R.id.imageColor5);
 
+        layoutMiscellaneous.findViewById(R.id.viewColor1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedNoteColor = "#333333";
+                imageColor1.setImageResource(R.drawable.ic_done);
+                imageColor2.setImageResource(0);
+                imageColor3.setImageResource(0);
+                imageColor4.setImageResource(0);
+                imageColor5.setImageResource(0);
+                setSubtitleIndicator();
+            }
+        });
+
+        layoutMiscellaneous.findViewById(R.id.viewColor2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedNoteColor = "FDBE3B";
+                imageColor1.setImageResource(0);
+                imageColor2.setImageResource(R.drawable.ic_done);
+                imageColor3.setImageResource(0);
+                imageColor4.setImageResource(0);
+                imageColor5.setImageResource(0);
+                setSubtitleIndicator();
+            }
+        });
+
+        layoutMiscellaneous.findViewById(R.id.viewColor3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedNoteColor = "#FF4842";
+                imageColor1.setImageResource(0);
+                imageColor2.setImageResource(0);
+                imageColor3.setImageResource(R.drawable.ic_done);
+                imageColor4.setImageResource(0);
+                imageColor5.setImageResource(0);
+                setSubtitleIndicator();
+            }
+        });
+
+        layoutMiscellaneous.findViewById(R.id.viewColor4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedNoteColor = "#3A52FC";
+                imageColor1.setImageResource(0);
+                imageColor2.setImageResource(0);
+                imageColor3.setImageResource(0);
+                imageColor4.setImageResource(R.drawable.ic_done);
+                imageColor5.setImageResource(0);
+                setSubtitleIndicator();
+            }
+        });
+
+        layoutMiscellaneous.findViewById(R.id.viewColor5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedNoteColor = "#000000";
+                imageColor1.setImageResource(0);
+                imageColor2.setImageResource(0);
+                imageColor3.setImageResource(0);
+                imageColor4.setImageResource(0);
+                imageColor5.setImageResource(R.drawable.ic_done);
+                setSubtitleIndicator();
+            }
+        });
 
     }
+
+    private void setSubtitleIndicator()
+    {
+        GradientDrawable gradientDrawable = (GradientDrawable) viewSubtitleIndicator.getBackground();
+        gradientDrawable.setColor(Color.parseColor(selectedNoteColor));
+    }
+
+
     public void anhxa(){
 
         inputNoteTitle = findViewById(R.id.inputNoteTitle);
@@ -137,5 +229,6 @@ public class CreateNoteActivity extends AppCompatActivity {
         inputNoteText = findViewById(R.id.inputNote);
         textDateTime = findViewById(R.id.textDateTime);
         imageNote = findViewById(R.id.imageNote);
+        viewSubtitleIndicator = findViewById(R.id.viewSubtitleIndicator);
     }
 }

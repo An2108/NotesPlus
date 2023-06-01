@@ -1,9 +1,12 @@
 package com.example.notesplus.Adapters;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +16,7 @@ import com.example.notesplus.Entities.Notes;
 import com.example.notesplus.Líteners.NotesListener;
 import com.example.notesplus.R;
 
+import java.nio.channels.GatheringByteChannel;
 import java.util.List;
 
 public class NotesAdapter extends  RecyclerView.Adapter<NotesAdapter.NoteViewHodel>{
@@ -61,6 +65,7 @@ public class NotesAdapter extends  RecyclerView.Adapter<NotesAdapter.NoteViewHod
     static  class  NoteViewHodel extends RecyclerView.ViewHolder{
 
         TextView textTitle, textSubtitle,textDateTime;
+        LinearLayout linearLayout;
         View layoutNote;
         public NoteViewHodel(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +84,15 @@ public class NotesAdapter extends  RecyclerView.Adapter<NotesAdapter.NoteViewHod
             }
             textDateTime.setText(notes.getDateTime());
 
+            GradientDrawable gradientDrawable=(GradientDrawable) layoutNote.getBackground();
+            if(notes.getColor() != null)
+            {
+                gradientDrawable.setColor(Color.parseColor(notes.getColor()));
+            }
+            else
+            {
+                gradientDrawable.setColor(Color.parseColor("#333333"));
+            }
         }
     }
 }
