@@ -1,6 +1,7 @@
 package com.example.notesplus.Adapters;
 
 import android.annotation.SuppressLint;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
@@ -15,14 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.notesplus.Entities.Notes;
 import com.example.notesplus.Líteners.NotesListener;
 import com.example.notesplus.R;
+import com.makeramen.roundedimageview.RoundedImageView;
 
-import java.nio.channels.GatheringByteChannel;
 import java.util.List;
 
 public class NotesAdapter extends  RecyclerView.Adapter<NotesAdapter.NoteViewHodel>{
 
     private List<Notes> notes;
      private NotesListener notesListener;
+
 
     public NotesAdapter(List<Notes> notes, NotesListener notesListener) {
         this.notes = notes;
@@ -67,12 +69,14 @@ public class NotesAdapter extends  RecyclerView.Adapter<NotesAdapter.NoteViewHod
         TextView textTitle, textSubtitle,textDateTime;
         LinearLayout linearLayout;
         View layoutNote;
+        RoundedImageView imageNote;
         public NoteViewHodel(@NonNull View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
             textSubtitle = itemView.findViewById(R.id.textSubTitle);
             textDateTime = itemView.findViewById(R.id.textDateTime);
             layoutNote = itemView.findViewById(R.id.layoutNote);
+            imageNote = itemView.findViewById(R.id.imageNote);
         }
 
         void setNote(Notes notes){
@@ -92,6 +96,13 @@ public class NotesAdapter extends  RecyclerView.Adapter<NotesAdapter.NoteViewHod
             else
             {
                 gradientDrawable.setColor(Color.parseColor("#333333"));
+            }
+
+            if(notes.getImagePath() != null){
+                imageNote.setImageBitmap(BitmapFactory.decodeFile(notes.getImagePath()));
+                imageNote.setVisibility(View.VISIBLE);
+            }else{
+                imageNote.setVisibility(View.GONE);
             }
         }
     }
