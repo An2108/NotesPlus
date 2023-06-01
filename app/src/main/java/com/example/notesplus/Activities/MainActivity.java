@@ -9,25 +9,29 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.example.notesplus.Adapters.NotesAdapter;
 import com.example.notesplus.Database.NoteDatabase;
 import com.example.notesplus.Entities.Notes;
+import com.example.notesplus.Líteners.NotesListener;
 import com.example.notesplus.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NotesListener {
 
     public static final int REQUEST_CODE_ADD_NOTE = 1;
+    public static final int REQUEST_CODE_UPDATE_NOTE = 2;
+
 
     private RecyclerView notesRecyclerView;
     private  List<Notes> notesList;
     private NotesAdapter notesAdapter;
+
+    private int noteClickedPosition = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +54,19 @@ public class MainActivity extends AppCompatActivity {
         );
 
         notesList = new ArrayList<>();
-        notesAdapter = new NotesAdapter(notesList);
+        notesAdapter = new NotesAdapter(notesList, this );
         notesRecyclerView.setAdapter(notesAdapter);
 
         getNotes();
+    }
+
+    @Override
+    public void onNoteClicked(Notes notes, int position) {
+        noteClickedPosition = position;
+        Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+        intent.putExtra("isViewOrUpdate", true);
+        intent.putExtra("notes", notes);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
     }
 
     private void getNotes(){

@@ -4,17 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.notesplus.Database.NoteDatabase;
 import com.example.notesplus.Entities.Notes;
 import com.example.notesplus.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +27,8 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     private EditText inputNoteTitle,inputNoteSubtitle, inputNoteText;
     private TextView textDateTime;
+    private   ImageView imageNote;
+    private  Notes alreadyAvailableNote;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +53,33 @@ public class CreateNoteActivity extends AppCompatActivity {
                 saveNote();
             }
         });
+
+        /*if(getIntent().getBooleanExtra("isViewOrUpdate", false)){
+            alreadyAvailableNote = (Notes) getIntent().getSerializableExtra("notes");
+            setViewOrUpdate();
+        }*/
+
+        initMiscellaneous();
     }
+
+
+ /*   private  void setViewOrUpdate(){
+        inputNoteTitle.setText(alreadyAvailableNote.getTitle());
+        inputNoteSubtitle.setText(alreadyAvailableNote.getSubtitle());
+        inputNoteText.setText(alreadyAvailableNote.getNoteText());
+        textDateTime.setText(alreadyAvailableNote.getDateTime());
+        if( alreadyAvailableNote.getImagePath()!= null && !alreadyAvailableNote.getImagePath().trim().isEmpty()){
+            imageNote.setImageBitmap(BitmapFactory.decodeFile(alreadyAvailableNote.getImagePath()));
+            imageNote.setVisibility(View.VISIBLE);
+            selectedImagePath = alreadyAvailableNote.getImagePath();
+        }
+        if(alreadyAvailableNote.getWebLink() != null && !alreadyAvailableNote.getWebLink().trim().isEmpty()){
+            textWebURL.setText.(alreadyAvailableNote.getWebLink());
+            layoutWebURL.setVisbility(View.VISIBLE);
+        }
+
+
+    }*/
 
     private void saveNote(){
         if(inputNoteTitle.getText().toString().trim().isEmpty()){
@@ -83,11 +114,28 @@ public class CreateNoteActivity extends AppCompatActivity {
         }
          new SaveNoteTask().execute();
     }
+    private  void initMiscellaneous(){
+        final LinearLayout layoutMiscellaneous = findViewById(R.id.layoutMiscellaneous);
+        final BottomSheetBehavior<LinearLayout> bottomSheetBehavior = BottomSheetBehavior.from(layoutMiscellaneous);
+        layoutMiscellaneous.findViewById(R.id.textMiscellaneous).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED){
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+        });
+
+
+    }
     public void anhxa(){
 
         inputNoteTitle = findViewById(R.id.inputNoteTitle);
         inputNoteSubtitle = findViewById(R.id.inputNoteSubTitle);
         inputNoteText = findViewById(R.id.inputNote);
         textDateTime = findViewById(R.id.textDateTime);
+        imageNote = findViewById(R.id.imageNote);
     }
 }
