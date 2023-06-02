@@ -57,28 +57,22 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     private LinearLayout layoutWebURL;
     private TextView textWebURL;
-    private   ImageView imageNote;
+    private   ImageView imageNote,imageBack,imageSave;
     private  Notes alreadyAvailableNote;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
         anhxa();
-        ImageView imageBack = findViewById(R.id.imageBack);
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
-
-
-
         textDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy MM:mm a", Locale.getDefault()).format((new Date()))
         );
-
-        ImageView imageSave = findViewById(R.id.imageSave);
         imageSave.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -112,6 +106,21 @@ public class CreateNoteActivity extends AppCompatActivity {
                 selectImagePath = "";
             }
         });
+
+        if(getIntent().getBooleanExtra("isFromQuickActions",false)){
+            String type = getIntent().getStringExtra("quickActionType");
+            if(type != null){
+                if(type.equals("image")){
+                    selectImagePath = getIntent().getStringExtra("imagePath");
+                    imageNote.setImageBitmap(BitmapFactory.decodeFile(selectImagePath));
+                    imageNote.setVisibility(View.VISIBLE);
+                    findViewById(R.id.imageRemoveImage).setVisibility(View.VISIBLE);
+                }else if (type.equals("URL")){
+                    textWebURL.setText(getIntent().getStringExtra("URL"));
+                    layoutWebURL.setVisibility(View.VISIBLE);
+                }
+            }
+        }
 
         initMiscellaneous();
         setSubtitleIndicator();
@@ -378,7 +387,6 @@ public class CreateNoteActivity extends AppCompatActivity {
         if(intent.resolveActivity(getPackageManager()) != null){
             startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
         }
-        
     }
 
     @Override
@@ -427,7 +435,6 @@ public class CreateNoteActivity extends AppCompatActivity {
             cursor.close();
         }
         return filePath;
-
     }
 
     private void showAddURLDialog()
@@ -449,7 +456,6 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
             final EditText inputURL = view.findViewById(R.id.inputURL);
             inputURL.requestFocus();
-
             view.findViewById(R.id.textAdd).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -468,7 +474,6 @@ public class CreateNoteActivity extends AppCompatActivity {
                     }
                 }
             });
-
             view.findViewById(R.id.textCancel).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -482,7 +487,8 @@ public class CreateNoteActivity extends AppCompatActivity {
 
 
     public void anhxa(){
-
+        imageBack = findViewById(R.id.imageBack);
+        imageSave = findViewById(R.id.imageSave);
         inputNoteTitle = findViewById(R.id.inputNoteTitle);
         inputNoteSubtitle = findViewById(R.id.inputNoteSubTitle);
         inputNoteText = findViewById(R.id.inputNote);
