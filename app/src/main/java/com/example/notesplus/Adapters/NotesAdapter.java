@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class NotesAdapter extends  RecyclerView.Adapter<NotesAdapter.NoteViewHodel>{
+public class NotesAdapter extends  RecyclerView.Adapter<NotesAdapter.NoteViewHoder>{
 
     private List<Notes> notes;
      private NotesListener notesListener;
@@ -41,8 +41,8 @@ public class NotesAdapter extends  RecyclerView.Adapter<NotesAdapter.NoteViewHod
 
     @NonNull
     @Override
-    public NoteViewHodel onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new NoteViewHodel(
+    public NoteViewHoder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new NoteViewHoder(
                 LayoutInflater.from(parent.getContext()).inflate(
                         R.layout.item_container_note,parent,false
                 )
@@ -50,7 +50,7 @@ public class NotesAdapter extends  RecyclerView.Adapter<NotesAdapter.NoteViewHod
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NoteViewHodel holder, @SuppressLint("RecyclerView") final int position) {
+    public void onBindViewHolder(@NonNull NoteViewHoder holder, @SuppressLint("RecyclerView") final int position) {
 
         holder.setNote(notes.get(position));
         holder.layoutNote.setOnClickListener(new View.OnClickListener() {
@@ -72,13 +72,12 @@ public class NotesAdapter extends  RecyclerView.Adapter<NotesAdapter.NoteViewHod
         return position;
     }
 
-    static  class  NoteViewHodel extends RecyclerView.ViewHolder{
+    static  class  NoteViewHoder extends RecyclerView.ViewHolder{
 
         TextView textTitle, textSubtitle,textDateTime;
-        LinearLayout linearLayout;
-        View layoutNote;
+        LinearLayout layoutNote;
         RoundedImageView imageNote;
-        public NoteViewHodel(@NonNull View itemView) {
+        public NoteViewHoder(@NonNull View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
             textSubtitle = itemView.findViewById(R.id.textSubTitle);

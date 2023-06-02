@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
     public static final int REQUEST_CODE_UPDATE_NOTE = 2;
     public static final int REQUEST_CODE_SHOW_NOTES = 3;
     public static final int REQUEST_CODE_SELECT_IMAGE = 4;
-    public static final int REQUEST_CODE_STORAGE_PEMISSION = 5;
+    public static final int REQUEST_CODE_STORAGE_PERMISSION = 5;
 
     private RecyclerView notesRecyclerView;
     private  List<Notes> notesList;
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
                         != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(
                             MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            REQUEST_CODE_STORAGE_PEMISSION
+                            REQUEST_CODE_STORAGE_PERMISSION
                     );
                 } else {
                     selectImage();
@@ -138,10 +138,12 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQUEST_CODE_STORAGE_PEMISSION && grantResults.length >0){
-            selectImage();
-        }else{
-            Toast.makeText(this, "Quyền bị từ chối!", Toast.LENGTH_SHORT).show();
+        if(requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.length >0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                selectImage();
+            } else {
+                Toast.makeText(this, "Quyền bị từ chối!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -152,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             filePath = contentUri.getPath();
         }else {
             cursor.moveToFirst();
-            int index =  cursor.getColumnIndex("data");
+            int index =  cursor.getColumnIndex("_data");
             filePath = cursor.getString(index);
             cursor.close();
         }

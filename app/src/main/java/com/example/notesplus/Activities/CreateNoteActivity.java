@@ -49,7 +49,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     private String selectedNoteColor;
     private String selectImagePath;
-    private static final int REQUEST_CODE_STORAGE_PEMISSION = 1;
+    private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final  int REQUEST_CODE_SELECT_IMAGE = 2;
 
     private AlertDialog dialogAddURL;
@@ -297,7 +297,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                         != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(
                             CreateNoteActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            REQUEST_CODE_STORAGE_PEMISSION
+                            REQUEST_CODE_STORAGE_PERMISSION
                     );
                 } else {
                     selectImage();
@@ -392,10 +392,12 @@ public class CreateNoteActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQUEST_CODE_STORAGE_PEMISSION && grantResults.length >0){
-            selectImage();
-        }else{
-            Toast.makeText(this, "Quyền bị từ chối!", Toast.LENGTH_SHORT).show();
+        if(requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.length >0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                selectImage();
+            } else {
+                Toast.makeText(this, "Quyền bị từ chối!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -430,7 +432,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             filePath = contentUri.getPath();
         }else {
             cursor.moveToFirst();
-            int index =  cursor.getColumnIndex("data");
+            int index =  cursor.getColumnIndex("_data");
             filePath = cursor.getString(index);
             cursor.close();
         }
